@@ -1,0 +1,13 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index"
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "农综支 OA",
+		"navigationBarBackgroundColor": "#2d8cf0",
+		"backgroundColor": "#F8F8F9"
+	}
+}
