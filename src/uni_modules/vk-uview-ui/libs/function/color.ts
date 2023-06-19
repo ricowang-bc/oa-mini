@@ -27,7 +27,7 @@ let color = {
 	successDisabled: "#71d5a1",
 	successLight: "#dbf1e1",
 	
-	mainColor: "#303133",
+	mainColor: "#17233d",
 	contentColor: "#606266",
 	tipsColor: "#909399",
 	lightColor: "#c0c4cc",

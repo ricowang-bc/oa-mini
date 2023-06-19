@@ -1,4 +1,3 @@
-// import { getConfig } from "@/utils/runtimeConfig";
-// let url = getConfig().apiUrl;
 
-export const admin_app_api_base_url = "http://api.lincee.cn";
+import { Setting } from "@/config/setting";
+export const admin_app_api_base_url = Setting.admin_app_api_base_url;

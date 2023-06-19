@@ -1,13 +1,27 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
+
+
+
+
 onLaunch(() => {
-  console.log("App Launch");
+    const token = uni.getStorageSync("token");
+
+    if (!token) {
+        uni.showToast({
+            title: "登录过期请重新登录!",
+            icon: "none",
+        });
+        uni.redirectTo({
+            url: "/pages/login",
+        });
+    }
 });
 onShow(() => {
-  console.log("App Show");
+    // console.log("App Show");
 });
 onHide(() => {
-  console.log("App Hide");
+    // console.log("App Hide");
 });
 </script>
 

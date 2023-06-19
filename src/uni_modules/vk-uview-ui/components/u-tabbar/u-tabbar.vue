@@ -115,7 +115,7 @@ export default {
 		// 激活时的演示，包括字体图标，提示文字等的演示
 		activeColor: {
 			type: String,
-			default: "#303133"
+			default: "#17233d"
 		},
 		// 未激活时的颜色
 		inactiveColor: {

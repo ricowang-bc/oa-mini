@@ -77,7 +77,7 @@
  * @tutorial https://www.uviewui.com/components/card.html
  * @property {Boolean} full 卡片与屏幕两侧是否留空隙（默认false）
  * @property {String} title 头部左边的标题
- * @property {String} title-color 标题颜色（默认#303133）
+ * @property {String} title-color 标题颜色（默认#17233d）
  * @property {String | Number} title-size 标题字体大小，单位rpx（默认30）
  * @property {String} sub-title 头部右边的副标题
  * @property {String} sub-title-color 副标题颜色（默认#909399）
@@ -120,7 +120,7 @@ export default {
 		// 标题颜色
 		titleColor: {
 			type: String,
-			default: '#303133'
+			default: '#909399'
 		},
 		// 标题字体大小，单位rpx
 		titleSize: {

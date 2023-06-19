@@ -75,6 +75,7 @@ export async function Query(
   body: ReportQueryRequest,
   options?: { [key: string]: any },
 ) {
+
   return request<PageResponseOfReportViewModel>(`${admin_app_api_base_url}/api/Report/query`, {
     method: 'POST',
     headers: {

@@ -16,7 +16,7 @@
 	 * @tutorial https://www.uviewui.com/components/subsection.html
 	 * @property {Array} list 选项的数组，形式见上方"基本使用"
 	 * @property {String Number} current 初始化时默认选中的选项索引值（默认0）
-	 * @property {String} active-color 激活时的颜色，mode为subsection时固定为白色（默认#303133）
+	 * @property {String} active-color 激活时的颜色，mode为subsection时固定为白色（默认#17233d）
 	 * @property {String} inactive-color 未激活时字体的颜色，mode为subsection时无效（默认#606266）
 	 * @property {String} mode 模式选择，见官网"模式选择"说明（默认button）
 	 * @property {String Number} font-size 字体大小，单位rpx（默认28）
@@ -55,7 +55,7 @@
 			// 激活的颜色
 			activeColor: {
 				type: String,
-				default: '#303133'
+				default: '#17233d'
 			},
 			// 未激活的颜色
 			inactiveColor: {

@@ -1,12 +1,13 @@
-import { createSSRApp as CA } from "vue"
-import App from "./App.vue"
+import { createSSRApp } from "vue";
+import App from "./App.vue";
 
-import uView from "./uni_modules/vk-uview-ui/index"
+import uView from "./uni_modules/vk-uview-ui/index";
+import './uni.scss'
 
 export function createApp() {
-    const app = CA(App);
-    app.use(uView);
-    return {
-        app,
-    }
+	const app = createSSRApp(App);
+	app.use(uView);
+	return {
+		app,
+	};
 }

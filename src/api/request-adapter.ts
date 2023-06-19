@@ -1,34 +1,37 @@
-import { RequestTask } from "uni-app"
+import qs from "qs";
 
-class RequestInterceptor {
-    private interceptors: uni.Interceptor[]
 
-    constructor() {
-        this.interceptors = []
-    }
 
-    public use(onFulfilled?: (config: uni.RequestOptions) => uni.RequestOptions | Promise<uni.RequestOptions>, onRejected?: (error: any) => any): number {
-        this.interceptors.push({ onFulfilled, onRejected })
-        return this.interceptors.length - 1
-    }
-
-    public eject(interceptorId: number): void {
-        if (this.interceptors[interceptorId]) {
-            this.interceptors[interceptorId] = null!
+function request<T>(url: string, options: any) {
+    return new Promise<T>((resolve, reject) => {
+        // uni-request
+        const token = uni.getStorageSync("token")?.token;
+        if (!token){
+             uni.showToast({
+                title: "登录过期请重新登录!",
+                icon: "none",
+            });
+            uni.redirectTo({
+                url: "/pages/login",
+            });
         }
-    }
-
-    public async execute(config: uni.RequestOptions): Promise<any> {
-        let chain: Promise<any> = Promise.resolve(config)
-
-        for (const interceptor of this.interceptors) {
-            if (interceptor && interceptor.onFulfilled) {
-                chain = chain.then(interceptor.onFulfilled)
-            }
-        }
-
-        return chain
-    }
+        const params = qs.stringify(options.params);
+		if (params !== "") {
+			url = url + "?" + params;
+		}
+        uni.request({
+			url: url,
+			method: options.method,
+			data: options.data,
+			header: { ...options.headers, Authorization: "Bearer " + token },
+			success: (res) => {
+				resolve(res.data as T);
+			},
+			fail: (err) => {
+				reject(err);
+			},
+		});
+    });
 }
 
-export default RequestInterceptor
+export default request;

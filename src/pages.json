@@ -1,13 +1,80 @@
 {
 	"pages": [
 		{
-			"path": "pages/index/index"
+			"path": "pages/index"
+		},
+		{
+			"path": "pages/list",
+            "style": {
+                "navigationBarTitleText": "我的审批"
+            }
+		},
+		{
+			"path": "pages/user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/doc",
+			"style": {
+				"navigationBarTitleText": "文档传阅"
+			}
+		},
+		{
+			"path": "pages/login",
+			"style": {
+				"navigationBarBackgroundColor": "#FFF",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
+    "subPackages":[
+        {
+            "root":"pages/report",
+            "pages":[
+                {
+                    "path":"create"
+                }
+            ]
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "农综支 OA",
+		"navigationBarTitleText": "Demo",
 		"navigationBarBackgroundColor": "#2d8cf0",
 		"backgroundColor": "#F8F8F9"
-	}
+	},
+    "tabBar": {
+        "color": "#999",
+        "selectedColor": "#2d8cf0",
+        "borderStyle": "black",
+        "backgroundColor": "#fff",
+        "list": [
+			{
+				"pagePath": "pages/index",
+				"text": "新申请",
+				"iconPath": "static/images/app.png",
+				"selectedIconPath": "static/images/app-active.png"
+			},
+			{
+				"pagePath": "pages/list",
+				"text": "审批",
+				"iconPath": "static/images/app.png",
+				"selectedIconPath": "static/images/app-active.png"
+			},
+			{
+				"pagePath": "pages/doc",
+				"text": "文档",
+				"iconPath": "static/images/doc.png",
+				"selectedIconPath": "static/images/doc-active.png"
+			},
+			{
+				"pagePath": "pages/user",
+				"text": "我的",
+				"iconPath": "static/images/user.png",
+				"selectedIconPath": "static/images/user-active.png"
+			}
+		]
+    }
 }

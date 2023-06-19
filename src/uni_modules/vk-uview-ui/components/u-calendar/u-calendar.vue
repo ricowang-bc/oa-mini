@@ -75,7 +75,7 @@
 	 * @property {Boolean} mask-close-able 是否允许通过点击遮罩关闭日历(默认true)
 	 * @property {String} month-arrow-color 月份切换按钮箭头颜色(默认#606266)
 	 * @property {String} year-arrow-color 年份切换按钮箭头颜色(默认#909399)
-	 * @property {String} color 日期字体的默认颜色(默认#303133)
+	 * @property {String} color 日期字体的默认颜色(默认#17233d)
 	 * @property {String} active-bg-color 起始/结束日期按钮的背景色(默认#2979ff)
 	 * @property {String Number} z-index 弹出时的z-index值(默认10075)
 	 * @property {String} active-color 起始/结束日期按钮的字体颜色(默认#ffffff)
@@ -173,7 +173,7 @@
 			// 默认日期字体颜色
 			color: {
 				type: String,
-				default: '#303133'
+				default: '#17233d'
 			},
 			// 选中|起始结束日期背景色
 			activeBgColor: {

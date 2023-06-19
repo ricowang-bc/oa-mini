@@ -30,7 +30,7 @@
 	 * @property {String Number} font-size tab文字大小，单位rpx（默认30）
 	 * @property {String Number} duration 滑块移动一次所需的时间，单位秒（默认0.5）
 	 * @property {String} active-color 滑块和激活tab文字的颜色（默认#2979ff）
-	 * @property {String} inactive-color tabs文字颜色（默认#303133）
+	 * @property {String} inactive-color tabs文字颜色（默认#17233d）
 	 * @property {String Number} bar-width 滑块宽度，单位rpx（默认40）
 	 * @property {Object} active-item-style 活动tabs item的样式，对象形式
 	 * @property {Object} bar-style 底部滑块的样式，对象形式
@@ -99,7 +99,7 @@
 			// 未选中项的颜色
 			inactiveColor: {
 				type: String,
-				default: '#303133'
+				default: '#17233d'
 			},
 			// 菜单底部移动的bar的宽度，单位rpx
 			barWidth: {

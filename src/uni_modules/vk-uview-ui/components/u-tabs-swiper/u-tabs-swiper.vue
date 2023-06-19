@@ -33,7 +33,7 @@
 	 * @property {String Number} font-size tab文字大小，单位rpx（默认30）
 	 * @property {String Number} swiper-width tabs组件外部swiper的宽度，默认为屏幕宽度，单位rpx（默认750）
 	 * @property {String} active-color 滑块和激活tab文字的颜色（默认#2979ff）
-	 * @property {String} inactive-color tabs文字颜色（默认#303133）
+	 * @property {String} inactive-color tabs文字颜色（默认#17233d）
 	 * @property {String Number} bar-width 滑块宽度，单位rpx（默认40）
 	 * @property {String Number} bar-height 滑块高度，单位rpx（默认6）
 	 * @property {Object} bar-style 底部滑块的样式，对象形式
@@ -97,7 +97,7 @@
 			// 未选中项的颜色
 			inactiveColor: {
 				type: String,
-				default: '#303133'
+				default: '#17233d'
 			},
 			// 菜单底部移动的bar的宽度，单位rpx
 			barWidth: {

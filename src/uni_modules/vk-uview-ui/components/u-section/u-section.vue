@@ -39,7 +39,7 @@
 	 * @property {Boolean} arrow 是否显示右边箭头（默认true）
 	 * @property {String Number} font-size 主标题的字体大小（默认28）
 	 * @property {Boolean} bold 主标题是否加粗（默认true）
-	 * @property {String} color 主标题颜色（默认#303133）
+	 * @property {String} color 主标题颜色（默认#17233d）
 	 * @event {Function} click 组件右侧的内容被点击时触发，用于跳转"更多"
 	 * @example <u-section title="今日热门" :right="false"></u-section>
 	 */
@@ -74,7 +74,7 @@
 			// 主标题的颜色
 			color: {
 				type: String,
-				default: '#303133'
+				default: '#17233d'
 			},
 			// 右边副标题的颜色
 			subColor: {
