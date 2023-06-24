@@ -1,8 +1,9 @@
 
 
 
+
 // const URL = "localhost:44338";
-const URL = "lincee-api.azurewebsites.net";
+const URL = "api.lincee.cn";
 
 
 

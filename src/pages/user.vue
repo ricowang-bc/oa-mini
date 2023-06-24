@@ -55,7 +55,7 @@ const logOff = () => {
             if (res.confirm) {
                 uni.removeStorageSync('token');
                 uni.removeStorageSync('user');
-                uni.reLaunch({
+                uni.redirectTo({
                     url: '/pages/login',
                 });
             }

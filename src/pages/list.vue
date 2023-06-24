@@ -1,7 +1,7 @@
 <template>
-    <view class="container" style="padding:20rpx 30rpx;background-color: #FFF;border-bottom: 2rpx solid #f8f8f9;">
-         <u-search placeholder="日照香炉生紫烟" v-model:value="query.name"></u-search>
-    </view>
+    <!-- <view class="container" style="padding:20rpx 30rpx;background-color: #FFF;border-bottom: 2rpx solid #f8f8f9;">
+         <u-search placeholder="输入编号查询" v-model:value="query.name"></u-search>
+    </view> -->
 	<u-tabs ref="uTabs" :current="current" :list="tabs" :is-scroll="false" @change="tabsChange" ></u-tabs>
     <view>
         <u-empty style="padding-top:400rpx" text="暂无数据" v-if="list.length == 0"></u-empty>
@@ -11,7 +11,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import API from '@/api'
-import type { ReportViewModel,  QueryParams } from '@/api/admin/gen/typings';
+import type { WorkViewModel,  QueryParams } from '@/api/admin/gen/typings';
+import { onPullDownRefresh } from '@dcloudio/uni-app';
+
 const current = ref(0);
 
 const tabs = [
@@ -20,6 +22,7 @@ const tabs = [
 	},
 	{
 		name: "已处理",
+
 	},
     {
 		name: "我申请的",
@@ -30,7 +33,7 @@ const tabs = [
 ];
 
 
-const list = ref<ReportViewModel[]>([]);
+const list = ref<WorkViewModel[]>([]);
 
 const tabsChange =async (index:any) => {
     current.value =index;
@@ -49,13 +52,16 @@ onMounted(async () => {
     await fetchData();
 });
 
+onPullDownRefresh(async ()=>{
+    await fetchData();
+    uni.stopPullDownRefresh();
+})
 
 const fetchData =async ()=>{
-    await uni.showLoading({ });
-    let res =await API.Report.Query(queryParms,query);
-    if (res.data){
-        list.value = res.data;
-        console.log(list.value.length);
+    uni.showLoading({title: '加载中' });
+    let res =await API.Summary.Query(queryParms);
+    if (res){
+        list.value = res;
     }
     uni.hideLoading();
 }

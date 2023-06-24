@@ -1,13 +1,28 @@
 {
 	"pages": [
 		{
-			"path": "pages/index"
+			"path": "pages/login",
+			"style": {
+				"navigationBarBackgroundColor": "#FFF",
+				"navigationBarTextStyle": "white",
+				"navigationBarHidden": true
+			}
 		},
 		{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "新申请"
+			}
+		},
+
+		{
 			"path": "pages/list",
-            "style": {
-                "navigationBarTitleText": "我的审批"
-            }
+			"style": {
+				"navigationBarTitleText": "我的审批"
+			},
+			"meta": {
+				"noCache": true
+			}
 		},
 		{
 			"path": "pages/user",
@@ -18,14 +33,11 @@
 		{
 			"path": "pages/doc",
 			"style": {
-				"navigationBarTitleText": "文档传阅"
-			}
-		},
-		{
-			"path": "pages/login",
-			"style": {
-				"navigationBarBackgroundColor": "#FFF",
-				"navigationBarTextStyle": "white"
+				"navigationBarTitleText": "文档传阅",
+				"enablePullDownRefresh": true
+			},
+			"meta": {
+				"noCache": true
 			}
 		}
 	],
@@ -41,7 +53,7 @@
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "Demo",
+		"navigationBarTitleText": "农综支OA",
 		"navigationBarBackgroundColor": "#2d8cf0",
 		"backgroundColor": "#F8F8F9"
 	},

@@ -3,7 +3,9 @@
 		<view style="padding-top: 320rpx;box-sizing: border-box;">
 			<view class="u-login-logo">
 				<u-image  width="120" height="120" src="/static/images/logo2.png" />
+                
 			</view>
+            <view class="u-text-center">邯郸市农业综合行政执法支队</view>
 			<u-form >
 				<u-form-item label="账号">
 					<input border="true" type="text" placeholder="请输入账号" v-model="user.userName" />

@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
 const gridList = [
     { icon:'calendar', title:'请假',prefix:'FLQJ' },
     { icon:'clock', title:'出差',prefix:'FLCC' },
@@ -39,7 +38,6 @@ const goOA = (link:string | undefined) => {
          })
    }
 }
-
 
 </script>
 
