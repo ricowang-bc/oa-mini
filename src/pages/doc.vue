@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref ,onMounted } from 'vue';
 import API from '@/api'
-import {   type DocQueryRequest,   type QueryParams,  type DocViewModel, Priority } from '@/api/admin/gen/typings';
+import {    type DocQueryRequest,   type QueryParams,  type DocViewModel, Priority } from '@/api/admin/gen/typings';
 import { onPullDownRefresh } from '@dcloudio/uni-app';
 const tabs = [
 	{
