@@ -43,10 +43,14 @@
 	],
     "subPackages":[
         {
-            "root":"pages/report",
+            "root":"pages/check",
             "pages":[
                 {
-                    "path":"create"
+                    "path": "index",
+                    "style": {
+                        "navigationBarTitleText": "审批详情",
+                        "enablePullDownRefresh": true
+                    }
                 }
             ]
         }
@@ -63,12 +67,7 @@
         "borderStyle": "black",
         "backgroundColor": "#fff",
         "list": [
-			{
-				"pagePath": "pages/index",
-				"text": "新申请",
-				"iconPath": "static/images/app.png",
-				"selectedIconPath": "static/images/app-active.png"
-			},
+
 			{
 				"pagePath": "pages/list",
 				"text": "审批",

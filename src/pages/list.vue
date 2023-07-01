@@ -7,7 +7,7 @@
         <u-empty text="暂无数据" v-if="list.length == 0"></u-empty>
         <template  v-else>
             <template v-for="(row,i) in list" :key="i">
-                <u-card :title-size="28" :head-style="{padding:'20rpx 20rpx'}" :border="false">
+                <u-card :title-size="28" :head-style="{padding:'20rpx 20rpx'}" :border="false" @click="handleCheck(row)">
                     <template #head>
                         <view class="u-flex flex-row-bewteen" style="justify-content: space-between;">
                             <view class="u-card__head--left u-flex u-line-1 ">
@@ -57,6 +57,15 @@ const tabs = [
 
 const list = ref<WorkViewModel[]>([]);
 
+const handleCheck = (row:WorkViewModel)=>{
+
+    uni.setStorageSync('check',row);
+    uni.navigateTo({
+        url: `/pages/check/index?id=${row.id}`,
+    });
+
+
+}
 
 
 const tabsChange =async (index:any) => {

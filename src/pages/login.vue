@@ -36,7 +36,7 @@ const login =async () => {
             uni.setStorageSync("token", res.token);
             uni.setStorageSync("user", res.info);
             uni.reLaunch({
-                url: "/pages/index",
+                url: "/pages/list",
             });
             uni.hideLoading();
         }else{
