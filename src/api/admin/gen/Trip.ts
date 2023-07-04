@@ -2,7 +2,7 @@
 /* eslint-disable */
 import request from '../../request-adapter';
 import { admin_app_api_base_url } from '../config';
-import type { CreateTripViewModel, Trip, UpdateTripViewModel, EditParams, CancelParams, WorkApprovalRequest, PublishParams, QueryRequest, PageResponseOfTripViewModel, QueryParams, RejectParams } from "./typings"
+import type { CreateTripViewModel, Trip, TripViewModel, GetParams, UpdateTripViewModel, EditParams, CancelParams, WorkApprovalRequest, PublishParams, QueryRequest, PageResponseOfTripViewModel, QueryParams, RejectParams } from "./typings"
 
 /** 此处后端没有提供注释 POST /api/Trip */
 export async function Post(body: CreateTripViewModel, options?: { [key: string]: any }) {
@@ -12,6 +12,20 @@ export async function Post(body: CreateTripViewModel, options?: { [key: string]:
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/Trip/${param0} */
+export async function Get(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: GetParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<TripViewModel>(`${admin_app_api_base_url}/api/Trip/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }

@@ -2,7 +2,7 @@
 /* eslint-disable */
 import request from '../../request-adapter';
 import { admin_app_api_base_url } from '../config';
-import type { LoginRequest, LoginResponseOfAuthController } from "./typings"
+import  type { LoginRequest, LoginResponseOfAuthController } from './typings';
 
 /** 此处后端没有提供注释 POST /api/Auth/login */
 export async function Login(body: LoginRequest, options?: { [key: string]: any }) {

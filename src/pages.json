@@ -1,46 +1,52 @@
 {
 	"pages": [
-		{
-			"path": "pages/login",
-			"style": {
-				"navigationBarBackgroundColor": "#FFF",
-				"navigationBarTextStyle": "white",
-				"navigationBarHidden": true
-			}
-		},
-		{
-			"path": "pages/index",
-			"style": {
-				"navigationBarTitleText": "新申请"
-			}
-		},
+        {
+            "path": "pages/login",
+            "style": {
+                "navigationBarBackgroundColor": "#FFF",
+                "navigationBarTextStyle": "white",
+                "navigationBarHidden": true
+            }
+        },
+        {
+            "path": "pages/index",
+            "style": {
+                "navigationBarTitleText": "新申请"
+            }
+        },
 
-		{
-			"path": "pages/list",
-			"style": {
-				"navigationBarTitleText": "我的审批"
-			},
-			"meta": {
-				"noCache": true
-			}
-		},
-		{
-			"path": "pages/user",
-			"style": {
-				"navigationBarTitleText": "我的"
-			}
-		},
-		{
-			"path": "pages/doc",
-			"style": {
-				"navigationBarTitleText": "文档传阅",
-				"enablePullDownRefresh": true
-			},
-			"meta": {
-				"noCache": true
-			}
-		}
-	],
+        {
+            "path": "pages/list",
+            "style": {
+                "navigationBarTitleText": "我的审批"
+            },
+            "meta": {
+                "noCache": true
+            }
+        },
+        {
+            "path": "pages/user",
+            "style": {
+                "navigationBarTitleText": "我的"
+            }
+        },
+        {
+            "path": "pages/people",
+            "style": {
+                "navigationBarTitleText": "选择分办人员"
+            }
+        },
+        {
+            "path": "pages/doc",
+            "style": {
+                "navigationBarTitleText": "文档传阅",
+                "enablePullDownRefresh": true
+            },
+            "meta": {
+                "noCache": true
+            }
+        }
+    ],
     "subPackages":[
         {
             "root":"pages/check",

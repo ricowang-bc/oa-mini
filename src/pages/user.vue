@@ -2,7 +2,8 @@
     <view class="bg-primary">
         <view style="padding: 30rpx 30rpx">
             <view class="u-flex">
-                <u-avatar :src="avatar" mode="square" />
+                <u-avatar v-if="user.avatar!=null" :src="avatar" mode="square" />
+                <u-avatar v-else mode="square" />
                 <view style="padding-left: 20rpx;">
                     <view style="font-size: 32rpx;margin-bottom: 4rpx;font-weight: bold;">
                         <text>{{ user?.name }} </text>
@@ -23,7 +24,7 @@
             <u-cell-item icon="question-circle-fill" title="帮助" />
         </u-cell-group>
     </view>
-    <view class="container">
+    <view class="container" style="padding-top:20rpx">
          <u-button @click="logOff" type="error" size="medium" style="width: 100%;box-sizing: border-box;" >退出登录</u-button>
     </view>
 </template>
@@ -62,5 +63,4 @@ const logOff = () => {
         },
     });
 };
-
 </script>

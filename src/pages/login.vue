@@ -23,10 +23,24 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { LoginRequest } from "@/api/admin/gen/typings";
-const user = ref<LoginRequest>({ userName: "", password: "1" });
+const user = ref<LoginRequest>({ userName: "", password: "" });
 import API from '@/api'
 
 const login =async () => {
+    if (user.value.userName == "") {
+        uni.showToast({
+            title: "请输入账号",
+            icon: "none",
+        });
+        return;
+    }
+    if (user.value.password == "") {
+        uni.showToast({
+            title: "请输入密码",
+            icon: "none",
+        });
+        return;
+    }
 	try{
         uni.showLoading({
             title: "登录中...",

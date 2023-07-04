@@ -2,7 +2,7 @@
 /* eslint-disable */
 import request from '../../request-adapter';
 import { admin_app_api_base_url } from '../config';
-import type { CreateLeaveViewModel, Leave, UpdateLeaveViewModel, EditParams, CancelParams, WorkApprovalRequest, PublishParams, QueryRequest, PageResponseOfLeaveViewModel, QueryParams, RejectParams } from "./typings"
+import type { CreateLeaveViewModel, Leave, LeaveViewModel, GetParams, UpdateLeaveViewModel, EditParams, CancelParams, WorkApprovalRequest, PublishParams, QueryRequest, PageResponseOfLeaveViewModel, QueryParams, RejectParams } from "./typings"
 
 /** 此处后端没有提供注释 POST /api/Leave */
 export async function Post(body: CreateLeaveViewModel, options?: { [key: string]: any }) {
@@ -12,6 +12,20 @@ export async function Post(body: CreateLeaveViewModel, options?: { [key: string]
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/Leave/${param0} */
+export async function Get(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: GetParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<LeaveViewModel>(`${admin_app_api_base_url}/api/Leave/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }

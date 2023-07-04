@@ -2,7 +2,7 @@
 /* eslint-disable */
 import request from '../../request-adapter';
 import { admin_app_api_base_url } from '../config';
-import type { CreateReportViewModel, Report, UpdateReportViewModel, EditParams, CancelParams, WorkApprovalRequest, PublishParams, ReportQueryRequest, PageResponseOfReportViewModel, QueryParams, RejectParams } from "./typings"
+import type { CreateReportViewModel, Report, ReportViewModel, GetParams, UpdateReportViewModel, EditParams, CancelParams, WorkApprovalRequest, PublishParams, ReportQueryRequest, PageResponseOfReportViewModel, QueryParams, RejectParams } from "./typings"
 
 /** 此处后端没有提供注释 POST /api/Report */
 export async function Post(body: CreateReportViewModel, options?: { [key: string]: any }) {
@@ -12,6 +12,20 @@ export async function Post(body: CreateReportViewModel, options?: { [key: string
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /api/Report/${param0} */
+export async function Get(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: GetParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<ReportViewModel>(`${admin_app_api_base_url}/api/Report/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }
@@ -75,7 +89,6 @@ export async function Query(
   body: ReportQueryRequest,
   options?: { [key: string]: any },
 ) {
-
   return request<PageResponseOfReportViewModel>(`${admin_app_api_base_url}/api/Report/query`, {
     method: 'POST',
     headers: {

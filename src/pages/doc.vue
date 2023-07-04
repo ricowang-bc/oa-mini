@@ -7,7 +7,7 @@
         <u-empty text="暂无数据" v-if="list.length == 0"></u-empty>
         <template  v-else>
             <template v-for="(doc,i) in list" :key="i">
-                <u-card :title-size="28" :head-style="{padding:'20rpx 20rpx'}" :border="false">
+                <u-card :title-size="28" :head-style="{padding:'20rpx 20rpx'}" :foot-style="{padding:'20rpx 20rpx',fontSize:'24rpx',textAlign:'right'}"  :border="false" @click="handleCheck(doc)">
                     <template #head>
                         <view class="u-flex flex-row-bewteen" style="justify-content: space-between;">
                             <view class="u-card__head--left u-flex u-line-1 ">
@@ -19,11 +19,13 @@
                         </view>
                     </template>
                     <template #body>
-                        <view class="u-text-gray" style="font-size: 24rpx;">
+                        <view class="u-text-gray" style="font-size: 24rpx;padding:0 0rpx 20rpx">
                             <text> 文件名称：{{doc.title}}</text>
-                            
                         </view>
                         <view class="u-text-gray" style="font-size: 24rpx;">来文单位：{{doc.unit}}</view>
+                    </template>
+                    <template #foot>
+                        {{ getTime(doc.createdTime) }}
                     </template>
                 </u-card>
             </template>
@@ -35,7 +37,9 @@
 import { ref ,onMounted } from 'vue';
 import API from '@/api'
 import {    type DocQueryRequest,   type QueryParams,  type DocViewModel, Priority } from '@/api/admin/gen/typings';
-import { onPullDownRefresh } from '@dcloudio/uni-app';
+import { onPullDownRefresh, onShow } from '@dcloudio/uni-app';
+import timeFormat from '@/uni_modules/vk-uview-ui/libs/function/timeFormat';
+
 const tabs = [
 	{
 		name: "待处理",
@@ -45,9 +49,6 @@ const tabs = [
 	},
     {
 		name: "我申请的",
-	},
-	{
-		name: "全部",
 	},
 ];
 
@@ -63,9 +64,23 @@ const getPri = (priority:any)=>{
         type:'warning'
     };
 }
+const getTime = (time:any) =>{
+    return timeFormat( time,'yyyy年mm月dd日 hh:MM');
+}
 
 
 const list = ref<DocViewModel[]>([]);
+
+const handleCheck = (row:DocViewModel)=>{
+
+    uni.setStorageSync('check',row);
+    const prefix = row.uuid?.split('-')[0];
+    uni.navigateTo({
+        url: `/pages/check/index?id=${row.id}&prefix=${prefix}&type=${query.value.mode}`,
+    });
+
+
+}
 
 const tabsChange =async (index:any) => {
     query.value.mode = index;
@@ -81,7 +96,7 @@ const query : any =ref<DocQueryRequest>({
 });
 
 
-onMounted(async () => {
+onShow(async () => {
     tabsChange(0);
 });
 
@@ -96,7 +111,9 @@ const fetchData = async ()=>{
     let res =await API.Doc.Query(queryParms,query.value);
     if (res.data){
         list.value = res.data;
+        
     }
+    
     uni.hideLoading();
 }
 </script>

@@ -7,6 +7,7 @@ import * as Car from './Car';
 import * as Che from './Che';
 import * as Department from './Department';
 import * as Doc from './Doc';
+import * as File from './File';
 import * as Leave from './Leave';
 import * as Meet from './Meet';
 import * as Menu from './Menu';
@@ -25,6 +26,7 @@ export default {
   Che,
   Department,
   Doc,
+  File,
   Leave,
   Meet,
   Menu,
