@@ -2,21 +2,20 @@
 	<view class="container login">
 		<view style="padding-top: 320rpx;box-sizing: border-box;">
 			<view class="u-login-logo">
-				<u-image  width="120" height="120" src="/static/images/logo2.png" />
-                
+				<u-image  width="120" height="120" src="/static/images/logo.jpg" />
 			</view>
-            <view class="u-text-center">邯郸市农业综合行政执法支队</view>
+            <view class="u-text-center" style="padding:32rpx 0">邯郸市农业综合行政执法支队</view>
 			<u-form >
 				<u-form-item label="账号">
-					<input border="true" type="text" placeholder="请输入账号" v-model="user.userName" />
+					<input :border="true" type="text" placeholder="请输入账号" v-model="user.userName" />
 				</u-form-item>
 				<u-form-item label="密码">
-					<input border="true" type="password" placeholder="请输入密码" v-model="user.password" />
+					<input :border="true" type="password" placeholder="请输入密码" v-model="user.password" />
 				</u-form-item>
-                <u-button  style="display: block;margin-top: 30rpx; width: 100%; " type="primary" size="medium" @click="login">登 录</u-button>
+                <u-button  style="display: block;margin-top: 30rpx; width: 100%; " type="success" size="medium" @click="login">登 录</u-button>
 			</u-form>
 		</view>
-		<view class="u-login-footer">© 2022 邯郸市农业综合行政执法支队</view>
+		<view class="u-login-footer">© 2022-2023 邯郸市农业综合行政执法支队</view>
 	</view>
 </template>
 
@@ -50,7 +49,7 @@ const login =async () => {
             uni.setStorageSync("token", res.token);
             uni.setStorageSync("user", res.info);
             uni.reLaunch({
-                url: "/pages/list",
+                url: "/pages/index",
             });
             uni.hideLoading();
         }else{

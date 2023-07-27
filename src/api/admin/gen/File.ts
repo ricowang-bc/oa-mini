@@ -60,3 +60,19 @@ export async function Blob(body: {
   });
 }
 
+
+export async function Tree(options?: { [key: string]: any }) {
+    return request<string>(`${admin_app_api_base_url}/api/User/Tree`, {
+        method: "GET",
+        ...(options || {}),
+    })
+}
+
+
+export async function BlobDownload(fileName:string) {
+    return request<any>(`${admin_app_api_base_url}/api/File/blob-download/${fileName}`, {
+        method: "GET",
+    })
+}
+
+

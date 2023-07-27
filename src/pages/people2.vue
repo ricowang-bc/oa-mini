@@ -11,7 +11,7 @@
 
 		<view class="bottom-fix">
 			<view class="u-flex row-end"  >
-				<u-button @click="SaveDonners" type="primary" size="medium">确定</u-button>
+				<u-button @click="SaveEntourages" type="primary" size="medium">确定</u-button>
 			</view>
 		</view>
 	</view>
@@ -54,9 +54,9 @@ const getUsers =(key:any)=>{
 const loadData =async () => {
 	let res = await API.User.All();
 	if (res){
-		const donners = uni.getStorageSync("donners");
+		const donners = uni.getStorageSync("entourages");
 		
-		peoples.value = [...res.filter(x=>x.departmentID == user.departmentID && x.id!= user.id)];
+		peoples.value = [...res.filter(x=> x.id!= user.id && x.isDeleted == false)];
 		if (donners){
 			peoples.value.forEach((item)=>{
 			
@@ -67,15 +67,12 @@ const loadData =async () => {
 	}
 }
 
-const SaveDonners = () => {
+const SaveEntourages = () => {
 	let res = peoples.value.filter((item)=>{
 		return item.checked;
 	});
-	uni.setStorageSync("donners",res);
-	const flow = uni.getStorageSync('check');
-	uni.navigateTo({
-        url: `/pages/check/index?id=${flow.id}&prefix=${flow.prefix}`,
-    });
+	uni.setStorageSync("entourages",res);
+	uni.navigateBack();
 }
 
 const onBackPress = (e:any) => {

@@ -26,24 +26,24 @@ const cellItems = computed(() => {
     ];
 
     if (type == 0) {
-        header = '普通程序用印审批单';
+        header = '普通程序用印';
     }
     else if (type == 1)
-        header = '普通程序（5万元以下）用印审批单';
+        header = '普通程序（5万元以下）用印';
     else if (type == 2)
-        header = '普通程序（5万元以上）用印审批单';
+        header = '普通程序（5万元以上）用印';
     else if (type == 3)
-        header = '简易程序用印审批单';
+        header = '简易程序用印';
     else if (type == 4)
-        header = '抽样封条盖章申请表';
+        header = '抽样封条盖章';
     else if (type == 5){ 
-        header = '公文盖章申请表';
+        header = '公文盖章';
         list = [
             {title:'公文名称',value:flow.gongWenName},
         ]
     }
     else if (type == 6){
-        header = '前置文书盖章申请表';
+        header = '前置文书盖章';
         list = [
             {title:'前置文书名称',value:flow.qianZhiName},
             {title:'前置文书案号',value:flow.qianZhiISBN},
@@ -58,6 +58,8 @@ const cellItems = computed(() => {
             title: '审批编号',
             value: flow.uuid,
         },
+        
+        {title:'用章',value:flow.sealLabel},
         {
             title:'用印类型',
             value: header,
@@ -71,7 +73,11 @@ const cellItems = computed(() => {
             value: flow.creatorName,
         },
         
-        ...list
+        ...list,
+         {
+            title: '用印原因',
+            value: flow.reason,
+        },
     ];
 });
 

@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import API from '@/api'
-import type {  WorkViewModel,FlowStatus, QueryParams,DocQueryRequest } from '@/api/admin/gen/typings';
+import type{   WorkViewModel, QueryParams, DocQueryRequest } from '@/api/admin/gen/typings';
 import { onPullDownRefresh, onShow } from '@dcloudio/uni-app';
 import timeFormat from '@/uni_modules/vk-uview-ui/libs/function/timeFormat';
 
@@ -128,9 +128,7 @@ const fetchDataOthers = async ()=>{
         item.prefix = getPrefix(item.prefix);
     })
      uni.hideLoading();
-
 }
-
 
 const tabsChange =async (index:any) => {
     query.value.mode = index;
@@ -140,15 +138,33 @@ const tabsChange =async (index:any) => {
         await fetchData();
         if (list.value.length>0){
             uni.setTabBarBadge({
-                index: 0,
+                index: 1,
                 text: list.value.length.toString()
+            })
+        }else{
+            uni.removeTabBarBadge({
+                index: 1
             })
         }
     }
-    
-    
-    
 }
+
+const setBadge2 = async()=>{
+    const q:any = {name:'',title:'',mode:0};
+    let res =await API.Doc.Query({page:1,limit:10000},q);
+    if (res){
+        const docs: any = res.data;
+        console.log(docs);
+        if (docs.length>0){
+            uni.setTabBarBadge({
+                index: 2,
+                text: docs.length.toString()
+            })
+        }
+    }
+}
+
+
 const queryParms : any = ref<QueryParams>({
     page:1,
     limit:10000,
@@ -201,7 +217,8 @@ const getTime = (time:any) =>{
 
 
 onShow(async () => {
-    tabsChange(0);
+    await tabsChange(0);
+    await setBadge2();
 });
 
 onPullDownRefresh(async ()=>{

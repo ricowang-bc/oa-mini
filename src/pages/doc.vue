@@ -85,6 +85,18 @@ const handleCheck = (row:DocViewModel)=>{
 const tabsChange =async (index:any) => {
     query.value.mode = index;
     await fetchData();
+    if(index == 0){
+        if (list.value.length>0){
+            uni.setTabBarBadge({
+                index: 2,
+                text: list.value.length.toString()
+            })
+        }else{
+            uni.removeTabBarBadge({
+                index: 2
+            })
+        }
+    }
 }
 const queryParms : QueryParams = {
     page:1,

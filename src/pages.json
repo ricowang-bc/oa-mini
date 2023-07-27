@@ -11,7 +11,7 @@
         {
             "path": "pages/index",
             "style": {
-                "navigationBarTitleText": "新申请"
+                "navigationBarTitleText": "工作台"
             }
         },
 
@@ -37,10 +37,25 @@
             }
         },
         {
+            "path": "pages/people2",
+            "style": {
+                "navigationBarTitleText": "选择同行人员"
+            }
+        },
+        {
             "path": "pages/doc",
             "style": {
                 "navigationBarTitleText": "文档传阅",
                 "enablePullDownRefresh": true
+            },
+            "meta": {
+                "noCache": true
+            }
+        },
+        {
+            "path": "pages/preview",
+            "style": {
+                "navigationBarTitleText": "文件预览"
             },
             "meta": {
                 "noCache": true
@@ -59,6 +74,42 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/car",
+            "pages": [
+                {
+                    "path": "create",
+                    "style": {
+                        "navigationBarTitleText": "用车申请",
+                        "enablePullDownRefresh": true
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/leave",
+            "pages": [
+                {
+                    "path": "create",
+                    "style": {
+                        "navigationBarTitleText": "请假申请",
+                        "enablePullDownRefresh": true
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/trip",
+            "pages": [
+                {
+                    "path": "create",
+                    "style": {
+                        "navigationBarTitleText": "出差申请",
+                        "enablePullDownRefresh": true
+                    }
+                }
+            ]
         }
     ],
 	"globalStyle": {
@@ -73,25 +124,30 @@
         "borderStyle": "black",
         "backgroundColor": "#fff",
         "list": [
-
-			{
-				"pagePath": "pages/list",
-				"text": "审批",
-				"iconPath": "static/images/app.png",
-				"selectedIconPath": "static/images/app-active.png"
-			},
-			{
-				"pagePath": "pages/doc",
-				"text": "文档",
-				"iconPath": "static/images/doc.png",
-				"selectedIconPath": "static/images/doc-active.png"
-			},
-			{
-				"pagePath": "pages/user",
-				"text": "我的",
-				"iconPath": "static/images/user.png",
-				"selectedIconPath": "static/images/user-active.png"
-			}
-		]
+            {
+                "pagePath": "pages/index",
+                "text": "工作台",
+                "iconPath": "static/images/app.png",
+                "selectedIconPath": "static/images/app-active.png"
+            },
+            {
+                "pagePath": "pages/list",
+                "text": "审批",
+                "iconPath": "static/images/app.png",
+                "selectedIconPath": "static/images/app-active.png"
+            },
+            {
+                "pagePath": "pages/doc",
+                "text": "文档",
+                "iconPath": "static/images/doc.png",
+                "selectedIconPath": "static/images/doc-active.png"
+            },
+            {
+                "pagePath": "pages/user",
+                "text": "我的",
+                "iconPath": "static/images/user.png",
+                "selectedIconPath": "static/images/user-active.png"
+            }
+        ]
     }
 }

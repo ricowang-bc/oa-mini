@@ -132,9 +132,10 @@ button.u-size-medium{
     padding-top: 20rpx;
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
-    background-color: #FFF;
+    background: #FFF;
     padding-left: 30rpx;
     padding-right: 30rpx;
+    z-index: 3;
 }
 .row-end{
     justify-content: flex-end;

@@ -23,20 +23,61 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
+import API from '@/api'
+import type { QueryParams } from '@/api/admin/gen/typings';
 const gridList = [
-    { icon:'calendar', title:'请假',prefix:'FLQJ' },
-    { icon:'clock', title:'出差',prefix:'FLCC' },
-    { icon:'car', title:'用车',prefix:'FLYC' },
-    { icon:'file-text', title:'工作汇报',prefix:'FLRR',link:'report' },
-    { icon:'moments', title:'用章',prefix:'FLYZ' },
-    { icon:'bookmark', title:'会议纪要',prefix:'FLMR' },
+    { icon:'calendar', title:'请假',prefix:'FLQJ',link:'leave' },
+    { icon:'clock', title:'出差',prefix:'FLCC',link:'trip' },
+    { icon:'car', title:'用车',prefix:'FLYC',link:'car' },
+    // { icon:'file-text', title:'工作汇报',prefix:'FLRR',link:'report' },
+    // { icon:'moments', title:'用章',prefix:'FLYZ' },
+    // { icon:'bookmark', title:'会议纪要',prefix:'FLMR' },
 ];
 const goOA = (link:string | undefined) => {
    if(link){
          uni.navigateTo({
-              url: `/pages/${link}/list`
+              url: `/pages/${link}/create`
          })
    }
+}
+const queryParms : any = ref<QueryParams>({
+    page:1,
+    limit:10000,
+});
+onShow(async () => {
+    let res =await API.Summary.Query(queryParms);
+    const list = res;
+    if (list.length>0){
+        uni.setTabBarBadge({
+            index: 1,
+            text: list.length.toString()
+        })
+    }else{
+        uni.removeTabBarBadge({
+            index: 1
+        })
+    }
+    await setBadge2();
+});
+
+const setBadge2 = async()=>{
+    const q:any = {name:'',title:'',mode:0};
+    let res =await API.Doc.Query({page:1,limit:10000},q);
+    if (res){
+        const docs: any = res.data;
+        if (docs.length>0){
+            uni.setTabBarBadge({
+                index: 2,
+                text: docs.length.toString()
+            })
+        }else{
+             uni.removeTabBarBadge({
+            index: 2
+        })
+    }
+    }
 }
 
 </script>

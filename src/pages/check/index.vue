@@ -35,7 +35,7 @@
             <template v-if="prefix=='FLDC'" >
                 <doc-item :flow="flow" />
                 <u-cell-group v-if="user.role?.level== 4 && !readonly">
-                    <u-cell-item title="选择分办人员" @click="goPeople"/>
+                    <u-cell-item  title="选择分办人员" @click="goPeople"/>
                     <view style="margin-bottom: 100rpx;padding:20rpx; 30rpx">
                         <template v-for="donner in donners">
                             <u-tag class="mb-20" style="margin-right: 20rpx; display: inline-block;"  size="small" type="info" :text="donner.name" />
@@ -43,9 +43,21 @@
                     </view>
                 </u-cell-group>
             </template>
+            <u-card title="审批意见" margin="30rpx 0" :body-style="{padding:'0'}">
+                <template #body>
+                    <u-cell-group >
+                    <template v-for="(step,index2) in flow.steps" :key="index2" >
+                        <template v-if="step.publishTime">
+                            <u-cell-item :title="step.userName" :label="step.roleName" :arrow="false" :value="step.content"/>
+                        </template>
+                    </template>
+                </u-cell-group>
+                </template>
+               
+            </u-card>
         </view>
         <view class="bottom-fix" v-if="!readonly">
-            <view style="padding-bottom:20rpx;border-bottom:1rpx solid #ddd">
+            <view style="padding-bottom:20rpx;border-bottom:1rpx solid #ddd;background: #FFF;">
                 <u-input v-model="remark"  :border="true" placeholder="填写意见"/>
             </view>
             <template v-if="prefix!='FLDC'">
@@ -54,16 +66,16 @@
                     <u-button @click="publish" type="primary" size="medium">同意</u-button>
                 </view>
                 <view class="u-flex row-end" style="padding-top:20rpx" v-else>
-                    <u-button type="primary" size="medium">签字</u-button>
+                    <u-button type="primary" size="medium" @click="publish">签字</u-button>
                 </view>
             </template>
             <template v-else>
                 <!-- 文档传阅 -->
-                <view class="u-flex row-end" style="padding-top:20rpx" >
+                <view class="u-flex row-end" style="padding-top:20rpx;background: #FFF;" >
                     <template v-if="user.role?.level!=5" >
-                        <u-button v-if="user.role?.level==1" @click="reject" type="error" size="medium" style="margin-right: 20rpx;">驳回</u-button>
-                        <u-button v-if="user.role?.level!= 4" @click="publish" type="primary" size="medium">签字</u-button>
-                        <u-button v-if="user.role?.level== 4"  @click="publish2" type="primary" size="medium">签字并分办</u-button>
+                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level==1" @click="reject" type="error" size="medium" style="margin-right: 20rpx;">驳回</u-button>
+                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level!= 4" @click="publish" type="primary" size="medium">签字</u-button>
+                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level== 4"  @click="publish2" type="primary" size="medium">签字并分办</u-button>
                     </template>
                     <template v-else>
                         <u-button @click="Do()"  type="primary" size="medium">知晓</u-button>
@@ -104,7 +116,9 @@ const prefix = computed(() => {
     return '';
 });
 const goPeople = ()=>{
-    if(readonly)
+    if(!flow.value.canPublish)
+        return;
+    if(readonly.value)
         return;
     uni.navigateTo({
         url: `/pages/people`
@@ -116,7 +130,7 @@ const getFlow = async () => {
     let page:any = getCurrentPages()[getCurrentPages().length - 1];
     const id = page.options.id;
     const prefix = page.options.prefix;
-    readonly.value = page.options.type=='1';
+    readonly.value = page.options.type=='1' || page.options.type=='2';
     let res :any = null;
     if(prefix != 'FLDC'){
         if(prefix == 'FLMR'){
@@ -187,11 +201,22 @@ const reject = async () => {
 
     if(res){
         uni.showToast({
-            title: '审批通过',
+            title: '审批已驳回',
             icon: 'success',
             duration: 2000
         });
-        uni.navigateBack();
+        if(prefix == 'FLDC'){
+            uni.removeStorageSync('check');
+            uni.removeStorageSync('donners');
+            uni.switchTab({
+                url: '/pages/doc'
+            })
+        }else{
+            uni.switchTab({
+                url: '/pages/list'
+            })
+        }
+        
     }
     uni.hideLoading();
 }
@@ -230,11 +255,22 @@ const publish = async () => {
 
     if(res){
         uni.showToast({
-            title: '审批通过',
+            title: '审批已驳回',
             icon: 'success',
             duration: 2000
         });
-        uni.navigateBack();
+        if(prefix == 'FLDC'){
+            uni.removeStorageSync('check');
+            uni.removeStorageSync('donners');
+            uni.switchTab({
+                url: '/pages/doc'
+            })
+        }else{
+            uni.switchTab({
+                url: '/pages/list'
+            })
+        }
+        
     }
     uni.hideLoading();
 }
@@ -249,11 +285,13 @@ const publish = async () => {
     let res = await $api.Doc.Do({flowID},body);
     if(res){
         uni.showToast({
-            title: '审批通过',
+            title: '提交成功',
             icon: 'success',
             duration: 2000
         });
-        uni.navigateBack();
+        uni.switchTab({
+            url: '/pages/doc'
+        })
     }
     uni.hideLoading();
 }
@@ -270,11 +308,15 @@ const publish2= async () =>{
     let res = await $api.Doc.Publish2({flowID},body);
     if(res){
         uni.showToast({
-            title: '审批通过',
+            title: '提交成功',
             icon: 'success',
             duration: 2000
         });
-        uni.navigateBack();
+        uni.removeStorageSync('check');
+        uni.removeStorageSync('donners');
+        uni.switchTab({
+            url: '/pages/doc'
+        })
     }
     uni.hideLoading();
 }

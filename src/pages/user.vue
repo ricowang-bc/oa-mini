@@ -7,7 +7,7 @@
                 <view style="padding-left: 20rpx;">
                     <view style="font-size: 32rpx;margin-bottom: 4rpx;font-weight: bold;">
                         <text>{{ user?.name }} </text>
-                        <u-tag :text="user?.role?.name" type="primary" size="small" style="margin-left: 20rpx;" />
+                        <u-tag v-if="user?.role?.level!=5" :text="user?.role?.name" type="primary" size="small" style="margin-left: 20rpx;" />
                     </view>
                     <view style="font-size: 24rpx;">{{ user?.department?.name }}</view>
                 </view>
@@ -56,6 +56,8 @@ const logOff = () => {
             if (res.confirm) {
                 uni.removeStorageSync('token');
                 uni.removeStorageSync('user');
+                uni.removeStorageSync('check');
+                uni.removeStorageSync('donners');
                 uni.redirectTo({
                     url: '/pages/login',
                 });
