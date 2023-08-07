@@ -38,16 +38,12 @@ const Files = computed(() => {
 });
 
 
-const previewFile = (file: any) => {
+const previewFile =async (file: any) => {
     file = file.trim();
-    // uni.navigateTo({
-    //     url: `/pages/preview?file=${file}`,
-    // });
-    // return;
-    console.log(`${Setting.admin_app_api_base_url}/upload/${file}`);
+    const url = `${Setting.admin_app_api_base_url}/api/File/transfor/${file}`;
+
     uni.downloadFile({
-        url: `${Setting.admin_app_api_base_url}/upload/${file}`,
-        // url:`${Setting.admin_app_api_base_url}/api/File/blob-download/${file}`,
+        url: url,
         success: function (res) {
             // 根据file的扩展名 替换文件后缀
             const ext = file.split('.').pop();

@@ -42,20 +42,16 @@ const Files = computed(() => {
 const members = computed(() => {
     return props.flow.steps?.map((item) => item.userName);
 });
-const previewFile = (file: any) => {
+const previewFile =async (file: any) => {
     file = file.trim();
-    // uni.navigateTo({
-    //     url: `/pages/preview?file=${file}`,
-    // });
-    // return;
+    const url = `${Setting.admin_app_api_base_url}/api/File/transfor/${file}`;
+
     uni.downloadFile({
-        url: `${Setting.admin_app_api_base_url}/upload/${file}`,
-        // url:`${Setting.admin_app_api_base_url}/api/File/blob-download/${file}`,
+        url: url,
         success: function (res) {
             // 根据file的扩展名 替换文件后缀
             const ext = file.split('.').pop();
             const filePath = res.tempFilePath;//.replace(/\.bin$/,`.${ext}`);
-            console.log(filePath);
             uni.showModal({
                 title:'提示',
                 content:'文件已保存到本地',

@@ -45,7 +45,7 @@ const showToast = () => {
 
 // computed
 const avatar = computed(() => {
-    return `${Setting.admin_app_upload_url}/${user?.avatar}`;
+    return `http://47.95.4.168:10001/upload/${user?.avatar}`;
 });
 
 const logOff = () => {
