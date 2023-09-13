@@ -2,7 +2,7 @@
 /* eslint-disable */
 import request from '../../request-adapter';
 import { admin_app_api_base_url } from '../config';
-import type { UserViewModel, User, EditParams, RemoveParams, UserQueryRequest, PageResponseOfUserViewModel, QueryParams } from "./typings"
+import type { UserViewModel, User, EditParams, RemoveParams, UserQueryRequest, PageResponseOfUserViewModel, QueryParams, ChangepasswordModel, ChangepasswordResult } from "./typings"
 
 /** 此处后端没有提供注释 GET /api/User */
 export async function All(options?: { [key: string]: any }) {
@@ -42,6 +42,35 @@ export async function Edit(
         ...(options || {}),
     });
 }
+
+
+export async function ChangeAvatar(body: string, options?: { [key: string]: any }) {
+    return request<ChangepasswordResult>(`${admin_app_api_base_url}/api/User/ChangeAvatar`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: body,
+        ...(options || {}),
+    })
+}
+
+
+/** 此处后端没有提供注释 PUT /api/User/${param0} */
+export async function ChangePassword(
+    body: ChangepasswordModel,
+    options?: { [key: string]: any }
+) {
+    return request<ChangepasswordResult>(`${admin_app_api_base_url}/api/User/ChangePassword`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: body,
+        ...(options || {}),
+    })
+}
+
 
 /** 此处后端没有提供注释 DELETE /api/User/${param0} */
 export async function Remove(

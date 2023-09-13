@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { ref ,onMounted } from 'vue';
 import API from '@/api'
-import {    type DocQueryRequest,   type QueryParams,  type DocViewModel, Priority } from '@/api/admin/gen/typings';
+import {    type DocQueryRequest,   type QueryParams,  type DocViewModel, Priority, State } from '@/api/admin/gen/typings';
 import { onPullDownRefresh, onShow } from '@dcloudio/uni-app';
 import timeFormat from '@/uni_modules/vk-uview-ui/libs/function/timeFormat';
 
@@ -122,8 +122,13 @@ const fetchData = async ()=>{
     uni.showLoading({title: '加载中' });
     let res =await API.Doc.Query(queryParms,query.value);
     if (res.data){
-        list.value = res.data;
-        
+        let array = new Array<any>();
+        array =[...res.data];
+        if (query.value.mode==0){
+             list.value = array.filter(x=>x.state<=2);
+        }else{
+            list.value = array;
+        }
     }
     
     uni.hideLoading();

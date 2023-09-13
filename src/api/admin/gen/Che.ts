@@ -30,6 +30,17 @@ export async function Get(
   });
 }
 
+
+/** 此处后端没有提供注释 GET /api/Che/${param0} */
+
+export async function Records(options?: { [key: string]: any }) {
+    return request<CheViewModel[]>(`${admin_app_api_base_url}/api/Che/records/all`, {
+        method: "GET",
+        ...(options || {}),
+    })
+}
+
+
 /** 此处后端没有提供注释 PUT /api/Che/${param0} */
 export async function Edit(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

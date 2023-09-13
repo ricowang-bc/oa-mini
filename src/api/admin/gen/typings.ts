@@ -45,6 +45,15 @@ export type ChangeUseStateParams = {
     id: string;
     state: CarState;
 };
+export type ChangepasswordResult = {
+    status: boolean
+    message: string
+}
+export type ChangepasswordModel = {
+    id?: string;
+    oldPwd?:string;
+    newPwd?:string;
+}
 
 export type Che = WorkFlow & {} & {
     begin?: string;
@@ -200,8 +209,10 @@ export type DocViewModel = WorkViewModel & {} & {
     priority?: Priority;
     files?: string;
     remark?: string;
-    state?: State;
+    state?: State | number;
     step?: number;
+    checkers?:string[];
+    donners?:string[];
 };
 
 export type DoParams = {
@@ -683,9 +694,10 @@ export enum Source {
 }
 
 export enum State {
-    待签 = '待签',
-    待办 = '待办',
-    完成 = '完成',
+    待签 = "待签",
+    待办 = "待办",
+    完成 = "完成",
+    已归档 = "已归档",
 }
 
 export enum StepEvent {
@@ -911,6 +923,7 @@ export type WorkSealViewModel = WorkViewModel & {} & {
     fengTiaoCount?: number;
     step?: number;
     type?: SealFlowType;
+    files?:string;
 };
 
 export type WorkViewModel = BaseViewModel & {} & {

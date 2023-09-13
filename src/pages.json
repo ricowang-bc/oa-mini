@@ -31,6 +31,18 @@
             }
         },
         {
+            "path": "pages/pwd",
+            "style": {
+                "navigationBarTitleText": "修改密码"
+            }
+        },
+        {
+            "path": "pages/help",
+            "style": {
+                "navigationBarTitleText": "帮助"
+            }
+        },
+        {
             "path": "pages/people",
             "style": {
                 "navigationBarTitleText": "选择分办人员"
@@ -64,8 +76,8 @@
     ],
     "subPackages":[
         {
-            "root":"pages/check",
-            "pages":[
+            "root": "pages/check",
+            "pages": [
                 {
                     "path": "index",
                     "style": {
@@ -82,6 +94,18 @@
                     "path": "create",
                     "style": {
                         "navigationBarTitleText": "用车申请",
+                        "enablePullDownRefresh": true
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/return",
+            "pages": [
+                {
+                    "path": "create",
+                    "style": {
+                        "navigationBarTitleText": "还车申请",
                         "enablePullDownRefresh": true
                     }
                 }

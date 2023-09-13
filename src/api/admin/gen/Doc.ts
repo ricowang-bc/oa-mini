@@ -63,6 +63,21 @@ export async function Cancel(
   });
 }
 
+/** 此处后端没有提供注释 PUT /api/Doc/Cancel/${param0} */
+export async function Archive(
+    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+    params: CancelParams,
+    options?: { [key: string]: any }
+) {
+    const { id: param0, ...queryParams } = params
+    return request<Doc>(`${admin_app_api_base_url}/api/Doc/Archive/${param0}`, {
+        method: "PUT",
+        params: { ...queryParams },
+        ...(options || {}),
+    })
+}
+
+
 /** 此处后端没有提供注释 PUT /api/Doc/Do/${param0} */
 export async function Do(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

@@ -85,8 +85,8 @@ const getPrefix = (prefix:any)=>{
     if (prefix == 'FLYC'){
         return '用车申请';
     }
-     if (prefix == 'FLDC'){
-        return '用车申请';
+    if (prefix == 'FLHC'){
+        return '还车申请';
     }
     return '审批申请';
 }
@@ -102,6 +102,7 @@ const fetchDataOthers = async ()=>{
     let ws = await API.WorkSeal.Query(parms,body);
     let ms = await API.Meet.Query(parms,body);
     let rs = await API.Report.Query(parms,body);
+    let rrs = await API.Return.Query(parms,body);
 
     if (qs.data)
         list.value = list.value.concat(qs.data);
@@ -115,6 +116,8 @@ const fetchDataOthers = async ()=>{
         list.value = list.value.concat(ms.data);
     if (rs.data)
         list.value = list.value.concat(rs.data);
+    if (rrs.data)
+        list.value = list.value.concat(rrs.data);
 
     // 将 list.value 根据日期倒序排列
     list.value.sort((a,b)=>{

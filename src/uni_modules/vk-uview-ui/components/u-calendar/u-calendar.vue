@@ -31,7 +31,8 @@
 				<block v-for="(item, index) in weekdayArr" :key="index">
 					<view class="u-calendar__content__item"></view>
 				</block>
-				<view class="u-calendar__content__item" :class="{
+				<template v-if="mode!='mulit'">
+					<view class="u-calendar__content__item" :class="{
 					'u-hover-class':openDisAbled(year,month,index+1),
 					'u-calendar__content--start-date': (mode == 'range' && startDate==`${year}-${month}-${index+1}`) || mode== 'date',
 					'u-calendar__content--end-date':(mode== 'range' && endDate==`${year}-${month}-${index+1}`) || mode == 'date'
@@ -43,13 +44,32 @@
 					<view class="u-calendar__content__item__tips" :style="{color:activeColor}" v-if="mode== 'range' && startDate==`${year}-${month}-${index+1}` && startDate!=endDate">{{startText}}</view>
 					<view class="u-calendar__content__item__tips" :style="{color:activeColor}" v-if="mode== 'range' && endDate==`${year}-${month}-${index+1}`">{{endText}}</view>
 				</view>
+				</template>
+				<template v-else>
+					<view class="u-calendar__content__item" :class="{
+						'u-hover-class':openDisAbled(year,month,index+1),
+					}" :style="{backgroundColor: getColor2(index,1)}" v-for="(item, index) in daysArr" :key="index"
+					@tap="dateClick(index)">
+						<view class="u-calendar__content__item__inner" :style="{color: getColor2(index,2)}">
+							<view>{{ index + 1 }}</view>
+						</view>
+					</view>
+				</template>
+				
 				<view class="u-calendar__content__bg-month">{{month}}</view>
 			</view>
 			<view class="u-calendar__bottom">
-				<view class="u-calendar__bottom__choose">
-					<text>{{mode == 'date' ? activeDate : startDate}}</text>
-					<text v-if="endDate">至{{endDate}}</text>
-				</view>
+				<template v-if="mode!='mulit'">
+					<view class="u-calendar__bottom__choose">
+						<text>{{mode == 'date' ? activeDate : startDate}}</text>
+						<text v-if="endDate">至{{endDate}}</text>
+					</view>
+				</template>
+				<template v-else>
+					<view class="u-calendar__bottom__choose">
+						<text>共{{ selectedDays.length }}天</text>
+					</view>
+				</template>
 				<view class="u-calendar__bottom__btn">
 					<u-button :type="btnType" shape="circle" size="default" @click="btnFix(false)">确定</u-button>
 				</view>
@@ -58,6 +78,8 @@
 	</u-popup>
 </template>
 <script>
+// import { uni } from '@dcloudio/uni-h5';
+
 	/**
 	 * calendar 日历
 	 * @description 此组件用于单个选择日期，范围选择日期等，日历被包裹在底部弹起的容器中。
@@ -90,7 +112,7 @@
 	 */
 
 	export default {
-		name: 'u-calendar',
+		name: 'u-calendar-ex',
 		emits: ["update:modelValue", "input", "change"],
 		props: {
 			// 通过双向绑定控制组件的弹出与收起
@@ -262,7 +284,8 @@
 				isStart: true,
 				min: null,
 				max: null,
-				weekDayZh: ['日', '一', '二', '三', '四', '五', '六']
+				weekDayZh: ['日', '一', '二', '三', '四', '五', '六'],
+				selectedDays:null
 			};
 		},
 		computed: {
@@ -298,6 +321,7 @@
 			this.init()
 		},
 		methods: {
+
 			getColor(index, type) {
 				let color = type == 1 ? '' : this.color;
 				let day = index + 1
@@ -309,6 +333,17 @@
 					color = type == 1 ? this.activeBgColor : this.activeColor;
 				} else if (this.endDate && timestamp > new Date(start).getTime() && timestamp < new Date(end).getTime()) {
 					color = type == 1 ? this.rangeBgColor : this.rangeColor;
+				}
+				return color;
+			},
+			getColor2(index, type) {
+				let color = type == 1 ? '' : this.color;
+				let day = index + 1;
+				let date = `${this.year}-${this.month}-${day}`
+				if (type==1){
+					color = this.selectedDays.includes(date)? this.activeBgColor:'';
+				}else{
+					color = this.selectedDays.includes(date)? this.activeColor:this.color;
 				}
 				return color;
 			},
@@ -330,6 +365,7 @@
 				this.endDay = 0;
 				this.endDate = "";
 				this.isStart = true;
+				this.selectedDays = [];
 				this.changeData();
 			},
 			//日期处理
@@ -412,7 +448,7 @@
 				this.weekday = this.getWeekday(this.year, this.month);
 				this.weekdayArr=this.generateArray(1,this.weekday)
 				this.showTitle = `${this.year}年${this.month}月`;
-				if (this.isChange && this.mode == 'date') {
+				if (this.isChange && (this.mode == 'date')) {
 					this.btnFix(true);
 				}
 			},
@@ -423,7 +459,7 @@
 					let date = `${this.year}-${this.month}-${day}`;
 					if (this.mode == 'date') {
 						this.activeDate = date;
-					} else {
+					} else if (this.mode == 'range'){
 						let compare = new Date(date.replace(/\-/g, '/')).getTime() < new Date(this.startDate.replace(/\-/g, '/')).getTime()
 						if (this.isStart || compare) {
 							this.startDate = date;
@@ -442,6 +478,22 @@
 							this.endMonth = this.month;
 							this.endDay = this.day;
 							this.isStart = true;
+						}
+					}else{
+						let selectedDay = `${this.year}-${this.month}-${day}`;
+						if (!this.selectedDays.includes(selectedDay) && this.selectedDays.length<=4){
+							this.selectedDays.push(selectedDay);
+						}else if (!this.selectedDays.includes(selectedDay) && this.selectedDays.length==5){
+							uni.showToast({
+								title:"超过5天的请假申请，需要在局OA平台申请",
+								duration:2000,
+								icon:'none'
+							});
+							return;
+						}
+						else{
+							let i = this.selectedDays.indexOf(selectedDay);
+							this.selectedDays.splice(i,1);
 						}
 					}
 				}
@@ -484,7 +536,7 @@
 						isToday: isToday,
 						// switch: show //是否是切换年月操作
 					});
-				} else {
+				} else if (this.mode=='range'){
 					if (!this.startDate || !this.endDate) return;
 					let startMonth = this.formatNum(this.startMonth);
 					let startDay = this.formatNum(this.startDay);
@@ -506,6 +558,10 @@
 						endDay: this.endDay,
 						endDate: endDate,
 						endWeek: endWeek
+					});
+				} else{
+					this.$emit('change', {
+						result: this.selectedDays,
 					});
 				}
 			}

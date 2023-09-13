@@ -3,7 +3,7 @@
 		<u-cell-item title="申请车辆" @click="show = true" :value="car"/>
 		<u-cell-item title="用车时间" @click="showCalendar=true"></u-cell-item>
         <view style="padding:20rpx 30rpx" class="u-flex u-row-between">
-            <view style="font-size: 24rx;color: #909399;" v-if="duration.length>0">{{ duration[0] }} 至 {{ duration[duration.length-1] }}</view>
+            <view style="font-size: 24rx;color: #909399;" v-if="duration.length>0">{{ durationDates[0] }} 至 {{ durationDates[duration.length-1] }}</view>
             <view style="font-size: 24rx;color: #909399;">共 {{ duration.length }} 天</view>
         </view>
 	</u-cell-group>
@@ -24,6 +24,7 @@ import type{   Car,  CreateCheViewModel } from '@/api/admin/gen/typings';
 import API from '@/api';
 import { onShow } from '@dcloudio/uni-app';
 
+import dayjs from 'dayjs'
 
 const car = computed(() => {
     return cars.value.find(item => item.id == request.value.carID)?.number;
@@ -55,6 +56,7 @@ onShow(async() => {
     }
 });
 const duration =ref<string[]>([]);
+const durationDates =ref<string[]>([]);
 
 const onConfirmCar = (e:any) => {
     
@@ -73,6 +75,7 @@ const onChangeDays = (e:any) => {
     for (let i = 0; i < days+1; i++) {
         const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
         duration.value.push(date.toLocaleDateString());
+         durationDates.value.push(dayjs(date).format('YYYY年MM月DD日'));
     }
     request.value.begin = e.startDate;
     request.value.finish = e.endDate;

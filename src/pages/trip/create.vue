@@ -2,7 +2,7 @@
     <u-cell-group>
 		<u-cell-item title="出差时间" @click="showCalendar=true"></u-cell-item>
         <view style="padding:20rpx 30rpx" class="u-flex u-row-between">
-            <view style="font-size: 24rx;color: #909399;" v-if="duration.length>0">{{ duration[0] }} 至 {{ duration[duration.length-1] }}</view>
+            <view style="font-size: 24rx;color: #909399;" v-if="duration.length>0">{{ durationDates[0] }} 至 {{ durationDates[duration.length-1] }}</view>
             <view style="font-size: 24rx;color: #909399;">共 {{ request.dayCount }} 天</view>
         </view>
         <u-cell-item title="出差类型" @click="showTypes = true" :value="request.type"/>
@@ -42,6 +42,7 @@ import { type CreateTripViewModel, TrafficType,TripType, type UserViewModel } fr
 import API from '@/api';
 import { onActivated } from 'vue';
 import { onBackPress, onShow, onUnload } from '@dcloudio/uni-app';
+import dayjs from 'dayjs'
 const entourages = ref<UserViewModel[]>([]);
 const types = [
     {index:0,label:'本市',type:TripType.本市},
@@ -134,6 +135,7 @@ const showCalendar = ref(false);
 const request = ref<CreateTripViewModel>({ });
 
 const duration =ref<string[]>([]);
+const durationDates =ref<string[]>([]);
 
 const onConfirmTriffic = (e:any) => {
     
@@ -152,6 +154,7 @@ const onChangeDays = (e:any) => {
     for (let i = 0; i < days+1; i++) {
         const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
         duration.value.push(date.toLocaleDateString());
+         durationDates.value.push(dayjs(date).format('YYYY年MM月DD日'));
     }
      request.value.start = e.startDate;
     request.value.end = e.endDate;

@@ -32,13 +32,14 @@
             <meet-item v-if="prefix=='FLMR'" :flow="flow" />
             <seal-item v-if="prefix=='FLYZ'" :flow="flow" />
             <report-item v-if="prefix=='FLRR'" :flow="flow" />
+            <return-item v-if="prefix=='FLHC'" :flow="flow" />
             <template v-if="prefix=='FLDC'" >
                 <doc-item :flow="flow" />
                 <u-cell-group v-if="user.role?.level== 4 && !readonly">
                     <u-cell-item  title="选择分办人员" @click="goPeople"/>
                     <view style="margin-bottom: 100rpx;padding:20rpx; 30rpx">
-                        <template v-for="donner in donners">
-                            <u-tag class="mb-20" style="margin-right: 20rpx; display: inline-block;"  size="small" type="info" :text="donner.name" />
+                        <template v-for="(donner,i) in donners" :key="i">
+                            <u-tag  class="mb-20" style="margin-right: 20rpx; display: inline-block;"  size="small" type="info" :text="donner.name" />
                         </template>                     
                     </view>
                 </u-cell-group>
@@ -57,10 +58,10 @@
             </u-card>
         </view>
         <view class="bottom-fix" v-if="!readonly">
-            <view style="padding-bottom:20rpx;border-bottom:1rpx solid #ddd;background: #FFF;">
-                <u-input v-model="remark"  :border="true" placeholder="填写意见"/>
-            </view>
             <template v-if="prefix!='FLDC'">
+                <view style="padding-bottom:20rpx;border-bottom:1rpx solid #ddd;background: #FFF;">
+                    <u-input v-model="remark"  :border="true" placeholder="填写意见"/>
+                </view>
                 <view class="u-flex row-end" style="padding-top:20rpx"  v-if="prefix!='FLMR'">
                     <u-button @click="reject" type="error" size="medium" style="margin-right: 20rpx;">驳回</u-button>
                     <u-button @click="publish" type="primary" size="medium">同意</u-button>
@@ -69,22 +70,30 @@
                     <u-button type="primary" size="medium" @click="publish">签字</u-button>
                 </view>
             </template>
-            <template v-else>
-                <!-- 文档传阅 -->
-                <view class="u-flex row-end" style="padding-top:20rpx;background: #FFF;" >
-                    <template v-if="user.role?.level!=5" >
+            <template v-else> <!-- 文档传阅 -->
+                <template v-if="(flow as DocViewModel).checkers?.includes(user.name!)" >
+                    <view style="padding-bottom:20rpx;border-bottom:1rpx solid #ddd;background: #FFF;">
+                        <u-input v-model="remark"  :border="true" placeholder="填写意见"/>
+                    </view>
+                    
+                    <view class="u-flex row-end" style="padding-top:20rpx;background: #FFF;" >
+                    
                         <u-button :disabled="!flow.canPublish" v-if="user.role?.level==1" @click="reject" type="error" size="medium" style="margin-right: 20rpx;">驳回</u-button>
-                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level!= 4" @click="publish" type="primary" size="medium">签字</u-button>
-                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level== 4"  @click="publish2" type="primary" size="medium">签字并分办</u-button>
-                    </template>
-                    <template v-else>
-                        <u-button @click="Do()"  type="primary" size="medium">知晓</u-button>
-                    </template>
-                </view>
+                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level!= 4" @click="publish" type="primary" size="medium">同意</u-button>
+                        <u-button :disabled="!flow.canPublish" v-if="user.role?.level== 4"  @click="publish2(false)" type="primary" size="medium">同意并分办</u-button>
+                    </view>
+                </template>
+                <template v-else>
+                    <!-- <view class="u-flex u-row-between" style="padding-top:20rpx;background: #FFF;" > -->
+                        <u-button v-if="(flow as DocViewModel).donners?.includes(user.name!) && flow.steps?.filter(s=>s.userID==user.id && s.event!=null).length==0" @click="Do()"  type="primary" size="medium">知晓</u-button>
+                        <u-button v-if="(flow as DocViewModel).state==2 && user.role?.code =='DOC-ARCHIVE'" @click="Archive()"  type="success" size="medium">归档</u-button>
+                    <!-- </view> -->
+                </template>
+                
             </template>
-            
         </view>
     </view>
+    <u-modal v-model="showModel" content="未选择分办人员，确认提交吗？" :show-cancel-button="true" @cancel="showModel=false" @confirm="publish2(true)"></u-modal>
 </template>
 <script lang="ts" setup>
 import { onLoad, onShow } from '@dcloudio/uni-app';
@@ -97,10 +106,12 @@ import CarItem from './components/car.vue'
 import TripItem from './components/trip.vue'
 import ReportItem from './components/report.vue'
 import DocItem from './components/doc.vue'
+import ReturnItem from './components/return.vue'
 import $api from '@/api';
 const flow = ref<WorkViewModel>({} as WorkViewModel);
 const remark = ref<string>('');
 const readonly = ref<boolean>(false);
+const showModel = ref<boolean>(false);
 
 onShow(async() => {
     // let check = uni.getStorageSync('check');
@@ -151,6 +162,9 @@ const getFlow = async () => {
         if(prefix == 'FLYC'){
             res = await $api.Che.Get({id})
         }
+        if(prefix == 'FLHC'){
+            res = await $api.Return.Get({id})
+        }
         if(res){
             flow.value = res;
         }
@@ -197,6 +211,9 @@ const reject = async () => {
     }
     if(prefix == 'FLDC'){
         res = await $api.Doc.Reject({flowID},body);
+    }
+    if(prefix == 'FLHC'){
+        res = await $api.Return.Reject({flowID},body);
     }
 
     if(res){
@@ -252,10 +269,13 @@ const publish = async () => {
     if(prefix == 'FLDC'){
         res = await $api.Doc.Publish({flowID},body);
     }
+    if(prefix == 'FLHC'){
+        res = await $api.Return.Publish({flowID},body);
+    }
 
     if(res){
         uni.showToast({
-            title: '审批已驳回',
+            title: '审批完成',
             icon: 'success',
             duration: 2000
         });
@@ -274,6 +294,23 @@ const publish = async () => {
     }
     uni.hideLoading();
 }
+
+const Archive = async ()=>{
+    uni.showLoading({title: '提交中' });
+    let res = await $api.Doc.Archive({id:flow.value.id!});
+    if(res){
+        uni.showToast({
+            title: '归档成功',
+            icon: 'success',
+            duration: 2000
+        });
+        uni.switchTab({
+            url: '/pages/doc'
+        })
+    }
+    uni.hideLoading();
+}
+
  const Do= async () =>{
     uni.showLoading({title: '提交中' });
     const prefix = flow.value.prefix;
@@ -296,14 +333,19 @@ const publish = async () => {
     uni.hideLoading();
 }
 
-const publish2= async () =>{
+const publish2= async (isSubmit:boolean) =>{
+    if ((!donners.value || donners.value.length==0) && !isSubmit){
+        showModel.value = true;
+        return;
+    };
+    console.log('123123');
     uni.showLoading({title: '提交中' });
     const prefix = flow.value.prefix;
     const flowID:any = flow.value.id;
     const body = {
         id:flow.value.id,
         remark:remark.value,
-        donner: donners.value.map((item:any)=>item.id)
+        donners:(!donners.value || donners.value.length==0)?[]:donners.value.map((item:any)=>item.id)
     }
     let res = await $api.Doc.Publish2({flowID},body);
     if(res){
@@ -342,6 +384,9 @@ const getPrefix = (prefix:any)=>{
     }
      if (prefix == 'FLDC'){
         return '用车申请';
+    }
+     if (prefix == 'FLHC'){
+        return '还车申请';
     }
     return '审批申请';
 }
